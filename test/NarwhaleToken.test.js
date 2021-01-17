@@ -1,5 +1,6 @@
 const { ethers } = require("hardhat")
 const { expect } = require("chai")
+
 describe("NarwhaleToken", function () {
   before(async function () {
     this.NarwhaleToken = await ethers.getContractFactory("NarwhaleToken")
