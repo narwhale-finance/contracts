@@ -41,8 +41,8 @@ contract School is Ownable {
 
     // The NAWA TOKEN!
     NarwhaleToken public narwhale;
-    // Dev fund (2%, initially)
-    uint256 public devFundDivRate = 50;
+    // Dev fund (10%, initially)
+    uint256 public devFundDivRate = 10;
     // Dev address.
     address public devaddr;
     // Block number when bonus NAWA period ends.
