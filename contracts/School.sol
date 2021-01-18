@@ -65,6 +65,7 @@ contract School is Ownable {
     event Recovered(address token, uint256 amount);
     event Deposit(address indexed user, uint256 indexed pid, uint256 amount);
     event Withdraw(address indexed user, uint256 indexed pid, uint256 amount);
+    event EmissionChange(address indexed user, uint256 previousNarwhalePerBlock, uint256 newNarwhalePerBlock);
     event EmergencyWithdraw(
         address indexed user,
         uint256 indexed pid,
@@ -274,8 +275,9 @@ contract School is Ownable {
 
     function setNarwhalePerBlock(uint256 _narwhalePerBlock) public onlyOwner {
         require(_narwhalePerBlock > 0, "!narwhalePerBlock-0");
-
+        uint256 previousNarwhalePerBlock = narwhalePerBlock;
         narwhalePerBlock = _narwhalePerBlock;
+        emit EmissionChange(msg.sender, previousNarwhalePerBlock, narwhalePerBlock);
     }
 
     function setBonusEndBlock(uint256 _bonusEndBlock) public onlyOwner {
