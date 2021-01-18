@@ -1,25 +1,26 @@
 {
-  "name": "@sushiswap/core",
-  "version": "1.4.1",
+  "name": "@narwhale/core",
+  "version": "1.0.0",
   "license": "MIT",
-  "description": "🎛 Core contracts for the SushiSwap protocol",
+  "description": "🎛 Core contracts for the Narwhale protocol",
   "files": [
     "contracts",
     "build"
   ],
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/sushiswap/sushiswap.git"
+    "url": "git+https://github.com/narwhale-finance/contracts.git"
   },
   "author": "",
   "bugs": {
-    "url": "https://github.com/sushiswap/sushiswap/issues"
+    "url": "https://github.com/narwhale-finance/contracts/issues"
   },
-  "homepage": "https://github.com/sushiswap/sushiswap#readme",
+  "homepage": "https://github.com/narwhale-finance/contracts#readme",
   "keywords": [
     "uniswap",
     "sushiswap",
-    "ethereum"
+    "ethereum",
+    "narwhale"
   ],
   "scripts": {
     "build": "hardhat compile",
