@@ -28,7 +28,7 @@
     "mainnet:deploy": "hardhat --network mainnet deploy",
     "mainnet:verify": "hardhat --network mainnet etherscan-verify --solc-input --license UNLICENSED",
     "mainnet:export": "hardhat --network mainnet export",
-    "ropsten:deploy": "hardhat --network ropsten deploy",
+    "ropsten:deploy": "hardhat run scripts/deploy.js --network ropsten",
     "ropsten:verify": "hardhat --network ropsten etherscan-verify --solc-input --license UNLICENSED",
     "ropsten:export": "hardhat --network ropsten export",
     "kovan:deploy": "hardhat --network kovan deploy",

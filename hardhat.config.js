@@ -64,14 +64,14 @@ module.exports = {
     },
     ropsten: {
       url: `https://ropsten.infura.io/v3/${process.env.INFURA_API_KEY}`,
-      accounts,
+      accounts: [process.env.ROPSTEN_PRIVATE_KEY],
       chainId: 3,
       live: true,
       saveDeployments: true,
     },
     kovan: {
       url: `https://kovan.infura.io/v3/${process.env.INFURA_API_KEY}`,
-      accounts,
+      accounts: [process.env.KOVAN_PRIVATE_KEY],
       chainId: 42,
       live: true,
       saveDeployments: true,
