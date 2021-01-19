@@ -64,8 +64,15 @@ module.exports = {
     },
     ropsten: {
       url: `https://ropsten.infura.io/v3/${process.env.INFURA_API_KEY}`,
-      accounts: [process.env.ROPSTEN_PRIVATE_KEY],
+      accounts: [process.env.ROPSTEN_PRIVATE_KEY, process.env.ROPSTEN2],
       chainId: 3,
+      live: true,
+      saveDeployments: true,
+    },
+    rinkeby: {
+      url: `https://rinkeby.infura.io/v3/${process.env.INFURA_API_KEY}`,
+      accounts: [process.env.RINKEBY_PRIVATE_KEY, process.env.RINKEBY2],
+      chainId: 4,
       live: true,
       saveDeployments: true,
     },

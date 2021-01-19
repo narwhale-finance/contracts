@@ -100,7 +100,7 @@ describe("School", function () {
       await this.narwhale.transferOwnership(this.chef.address)
 
       await this.chef.add("100", this.lp.address, true)
-
+      
       await this.lp.connect(this.bob).approve(this.chef.address, "1000", { from: this.bob.address })
       await this.chef.connect(this.bob).deposit(0, "100", { from: this.bob.address })
       await time.advanceBlockTo("89")
@@ -126,6 +126,18 @@ describe("School", function () {
       expect(await this.narwhale.balanceOf(this.bob.address)).to.equal("5000")
       expect(await this.narwhale.balanceOf(this.dev.address)).to.equal("500")
       expect(await this.narwhale.totalSupply()).to.equal("5500")
+    })
+
+    it("should increment available pools after adding one", async function() {
+      this.chef = await this.School.deploy(this.narwhale.address, this.dev.address, "100", "100", "1000")
+      await this.chef.deployed()
+
+      await this.narwhale.transferOwnership(this.chef.address)
+
+      await this.chef.add("100", this.lp.address, true)
+
+      const poolsAfter = await this.chef.poolLength();
+      expect(poolsAfter).to.equal(1)
     })
 
     it("should not distribute NAWAs if no one deposit", async function () {
