@@ -26,6 +26,7 @@
     "build": "hardhat compile",
     "console": "hardhat console",
     "console:rinkeby": "hardhat console --network rinkeby",
+    "console:mainnet": "hardhat console --network mainnet",
     "mainnet:deploy": "hardhat --network mainnet deploy",
     "mainnet:verify": "hardhat --network mainnet etherscan-verify --solc-input --license UNLICENSED",
     "mainnet:export": "hardhat --network mainnet export",

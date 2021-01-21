@@ -271,7 +271,7 @@ contract School is Ownable {
         devaddr = _devaddr;
     }
 
-    // **** Additional functions separate from the original School contract ****
+    // **** Additional functions separate from the original Masterchef contract ****
 
     function setNarwhalePerBlock(uint256 _narwhalePerBlock) public onlyOwner {
         require(_narwhalePerBlock > 0, "!narwhalePerBlock-0");
@@ -285,7 +285,7 @@ contract School is Ownable {
     }
 
     function setDevFundDivRate(uint256 _devFundDivRate) public onlyOwner {
-        require(_devFundDivRate > 0, "!devFundDivRate-0");
+        require(_devFundDivRate > 0 && _devFundDivRate <= 10, "!devFundDivRate-0");
         devFundDivRate = _devFundDivRate;
     }
 }

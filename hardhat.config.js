@@ -62,6 +62,13 @@ module.exports = {
       chainId: 31337,
       accounts,
     },
+    mainnet: {
+      url: `https://mainnet.infura.io/v3/${process.env.INFURA_API_KEY}`,
+      accounts: [process.env.MAIN_PRIVATE_KEY, process.env.MAIN2],
+      chainId: 1,
+      live: true,
+      saveDeployments: true,
+    },
     ropsten: {
       url: `https://ropsten.infura.io/v3/${process.env.INFURA_API_KEY}`,
       accounts: [process.env.ROPSTEN_PRIVATE_KEY, process.env.ROPSTEN2],
