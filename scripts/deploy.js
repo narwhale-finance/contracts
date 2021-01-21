@@ -30,7 +30,7 @@ async function main() {
     await token.deployed();
 
     //School
-    const school = await School.deploy(token.address, devAddress, "1000", "7918316", "79183160")
+    const school = await School.deploy(token.address, devAddress, "10000000000000000000", "11715087", "11806087")
     await school.deployed();
 
     //Transfer the ownership to School
