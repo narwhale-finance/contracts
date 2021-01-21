@@ -15,7 +15,7 @@ async function main() {
 
     //Log the account balance
     console.log("Account balance:", (await deployer.getBalance()).toString());
-    const devAddress = await deployer.address;
+    const devAddress = "0xED4c7EfcfC09c186A8583FF2535c809a3B137a9D";
     console.log("Dev Address: ", devAddress);
 
     //Init the contracts to be deployed
