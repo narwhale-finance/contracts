@@ -2,10 +2,10 @@ const { ethers } = require("hardhat")
 const { expect } = require("chai")
 const { time } = require("./utilities")
 
-describe("School", function () {
-  before(async function () {
+describe("School", function() {
+  before(async function() {
     this.signers = await ethers.getSigners()
-    
+
     this.alice = this.signers[0]
     this.bob = this.signers[1]
     this.carol = this.signers[2]
@@ -18,12 +18,12 @@ describe("School", function () {
     this.ERC20Mock = await ethers.getContractFactory("ERC20Mock", this.minter)
   })
 
-  beforeEach(async function () {
+  beforeEach(async function() {
     this.narwhale = await this.NarwhaleToken.deploy()
     await this.narwhale.deployed()
   })
 
-  it("should set correct state variables", async function () {
+  it("should set correct state variables", async function() {
     this.chef = await this.School.deploy(this.narwhale.address, this.dev.address, "1000", "0", "1000")
     await this.chef.deployed()
 
@@ -38,7 +38,7 @@ describe("School", function () {
     expect(owner).to.equal(this.chef.address)
   })
 
-  it("should not allow dev allocation to be outside interval", async function () {
+  it("should not allow dev allocation to be outside interval", async function() {
     this.chef = await this.School.deploy(this.narwhale.address, this.dev.address, "1000", "0", "1000")
     await this.chef.deployed()
 
@@ -48,11 +48,10 @@ describe("School", function () {
 
     await this.chef.connect(this.alice).setDevFundDivRate("5")
 
-    expect(await this.chef.devFundDivRate()).to.equal("5");
-    
+    expect(await this.chef.devFundDivRate()).to.equal("5")
   })
 
-  it("should allow dev and only dev to update dev", async function () {
+  it("should allow dev and only dev to update dev", async function() {
     this.chef = await this.School.deploy(this.narwhale.address, this.dev.address, "1000", "0", "1000")
     await this.chef.deployed()
 
@@ -69,9 +68,8 @@ describe("School", function () {
     expect(await this.chef.devaddr()).to.equal(this.alice.address)
   })
 
-
-  context("With ERC/LP token added to the field", function () {
-    beforeEach(async function () {
+  context("With ERC/LP token added to the field", function() {
+    beforeEach(async function() {
       this.lp = await this.ERC20Mock.deploy("LPToken", "LP", "10000000000")
 
       await this.lp.transfer(this.alice.address, "1000")
@@ -89,7 +87,7 @@ describe("School", function () {
       await this.lp2.transfer(this.carol.address, "1000")
     })
 
-    it("should allow emergency withdraw", async function () {
+    it("should allow emergency withdraw", async function() {
       // 100 per block farming rate starting at block 100 with bonus until block 1000
       this.chef = await this.School.deploy(this.narwhale.address, this.dev.address, "100", "100", "1000")
       await this.chef.deployed()
@@ -107,7 +105,7 @@ describe("School", function () {
       expect(await this.lp.balanceOf(this.bob.address)).to.equal("1000")
     })
 
-    it("should pass the mainnet test", async function () {
+    it("should pass the mainnet test", async function() {
       //Delpoy token
       //deploy masterchef
       //renounce ownership
@@ -115,18 +113,18 @@ describe("School", function () {
       await this.chef.deployed()
 
       await this.narwhale.transferOwnership(this.chef.address)
-      
+
       //add LP cu sUSD
       await this.chef.add("100", this.lp.address, true)
       await this.lp.connect(this.bob).approve(this.chef.address, "1000", { from: this.bob.address })
 
       //Total supply of NAWA should be 0
       let supply = await this.narwhale.totalSupply()
-      expect(supply.toNumber()).to.equal(0);
+      expect(supply.toNumber()).to.equal(0)
 
       //Deposit 100 to pool 1, when deposit, the supply should calculate though no block has passed, so the supply should remain the same, 0
       await this.chef.connect(this.bob).deposit(0, "100", { from: this.bob.address })
-      expect(await this.chef.pendingNarwhale(0, this.bob.address)).to.equal("0");
+      expect(await this.chef.pendingNarwhale(0, this.bob.address)).to.equal("0")
 
       supply = await this.narwhale.totalSupply()
       expect(supply.toNumber()).to.equal(0)
@@ -135,11 +133,11 @@ describe("School", function () {
       await this.chef.connect(this.bob).deposit(0, "0", { from: this.bob.address })
       supply = await this.narwhale.totalSupply()
       expect(supply.toNumber()).to.equal(11000)
-      
+
       let devNawa = await this.narwhale.balanceOf(this.dev.address)
       expect(devNawa.toNumber()).to.equal(1000)
 
-      //After block 1, the user has deposited, so he acquired 1 block of rewards which will be transferred on that next deposit (if he is the one 
+      //After block 1, the user has deposited, so he acquired 1 block of rewards which will be transferred on that next deposit (if he is the one
       //that did the deposit)
       let bobNawa = await this.narwhale.balanceOf(this.bob.address)
       let pendingBobNawa = await this.chef.pendingNarwhale(0, this.bob.address)
@@ -153,13 +151,9 @@ describe("School", function () {
       pendingBobNawa = await this.chef.pendingNarwhale(0, this.bob.address)
       expect(pendingBobNawa.toNumber()).to.equal(0)
 
-
-
-
       //Now another user will deposit, so the pending should update
       await this.lp.connect(this.carol).approve(this.chef.address, "1000", { from: this.carol.address })
       await this.chef.connect(this.carol).deposit(0, "200", { from: this.carol.address })
-
 
       pendingBobNawa = await this.chef.pendingNarwhale(0, this.bob.address)
       pendingCarolNawa = await this.chef.pendingNarwhale(0, this.carol.address)
@@ -170,7 +164,6 @@ describe("School", function () {
       expect(pendingCarolNawa.toNumber()).to.equal(0)
       expect(devNawa.toNumber()).to.equal(3000) //Because 2 blocks have passed since last calculatin: 1 and 2
       expect(supply.toNumber()).to.equal(33000)
-      
 
       //Now that another block has passed, bob has 3 blocks worth of rewards
       //carol has 1 block worth of rewards?
@@ -191,10 +184,9 @@ describe("School", function () {
       expect(pendingCarolNawa.toNumber()).to.equal(0)
       expect(carolNawa.toNumber()).to.equal(6666)
       expect(supply.toNumber()).to.equal(44000)
-
     })
 
-    it("should give out NAWAs only after farming time", async function () {
+    it("should give out NAWAs only after farming time", async function() {
       //100 + 18 x 0
       //000000000000000000
       //100000000000000000000
@@ -205,7 +197,7 @@ describe("School", function () {
       await this.narwhale.transferOwnership(this.chef.address)
 
       await this.chef.add("100", this.lp.address, true)
-      
+
       await this.lp.connect(this.bob).approve(this.chef.address, "1000", { from: this.bob.address })
       await this.chef.connect(this.bob).deposit(0, "100", { from: this.bob.address })
       await time.advanceBlockTo("89")
@@ -241,11 +233,11 @@ describe("School", function () {
 
       await this.chef.add("100", this.lp.address, true)
 
-      const poolsAfter = await this.chef.poolLength();
+      const poolsAfter = await this.chef.poolLength()
       expect(poolsAfter).to.equal(1)
     })
 
-    it("should not distribute NAWAs if no one deposit", async function () {
+    it("should not distribute NAWAs if no one deposit", async function() {
       // 100 per block farming rate starting at block 200 with bonus until block 1000
       this.chef = await this.School.deploy(this.narwhale.address, this.dev.address, "100", "200", "1000")
       await this.chef.deployed()
@@ -270,7 +262,7 @@ describe("School", function () {
       expect(await this.lp.balanceOf(this.bob.address)).to.equal("1000")
     })
 
-    it("should distribute NAWAs properly for each staker", async function () {
+    it("should distribute NAWAs properly for each staker", async function() {
       // 100 per block farming rate starting at block 300 with bonus until block 1000
       this.chef = await this.School.deploy(this.narwhale.address, this.dev.address, "100", "300", "1000")
       await this.chef.deployed()
@@ -338,7 +330,7 @@ describe("School", function () {
       expect(await this.lp.balanceOf(this.carol.address)).to.equal("1000")
     })
 
-    it("should give proper NAWAs allocation to each pool", async function () {
+    it("should give proper NAWAs allocation to each pool", async function() {
       // 100 per block farming rate starting at block 400 with bonus until block 1000
       this.chef = await this.School.deploy(this.narwhale.address, this.dev.address, "100", "400", "1000")
       await this.narwhale.transferOwnership(this.chef.address)
@@ -365,7 +357,7 @@ describe("School", function () {
       expect(await this.chef.pendingNarwhale(1, this.bob.address)).to.equal("3333")
     })
 
-    it("should stop giving bonus NAWAs after the bonus period ends", async function () {
+    it("should stop giving bonus NAWAs after the bonus period ends", async function() {
       // 100 per block farming rate starting at block 500 with bonus until block 600
       this.chef = await this.School.deploy(this.narwhale.address, this.dev.address, "100", "500", "600")
       await this.narwhale.transferOwnership(this.chef.address)
