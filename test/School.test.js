@@ -243,6 +243,7 @@ describe("School", function() {
       await this.chef.deployed()
       await this.narwhale.transferOwnership(this.chef.address)
       await this.chef.add("100", this.lp.address, true)
+      await this.chef.add("200", this.lp2.address, true)
       await this.lp.connect(this.bob).approve(this.chef.address, "1000", { from: this.bob.address })
       await time.advanceBlockTo("199")
       expect(await this.narwhale.totalSupply()).to.equal("0")
@@ -256,9 +257,9 @@ describe("School", function() {
       expect(await this.lp.balanceOf(this.bob.address)).to.equal("990")
       await time.advanceBlockTo("219")
       await this.chef.connect(this.bob).withdraw(0, "10", { from: this.bob.address }) // block 220
-      expect(await this.narwhale.totalSupply()).to.equal("11000")
-      expect(await this.narwhale.balanceOf(this.bob.address)).to.equal("10000")
-      expect(await this.narwhale.balanceOf(this.dev.address)).to.equal("1000")
+      expect(await this.narwhale.totalSupply()).to.equal("3666")
+      expect(await this.narwhale.balanceOf(this.bob.address)).to.equal("3333")
+      expect(await this.narwhale.balanceOf(this.dev.address)).to.equal("333")
       expect(await this.lp.balanceOf(this.bob.address)).to.equal("1000")
     })
 
